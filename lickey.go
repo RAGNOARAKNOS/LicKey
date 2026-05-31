@@ -94,6 +94,9 @@ func GenerateLicenseKey(lic LicenseData, privKey ed25519.PrivateKey) (string, er
 	expiry := uint32(time.Unix())
 
 	// Hash the username
+	hasher := sha256.New()
+	hasher.Write([]byte(strings.TrimSpace(strings.ToLower(lic.Username))))
+	userHash := hasher.Sum(nil)[:4]
 
 	// Pack the data
 
@@ -105,11 +108,6 @@ func GenerateLicenseKey(lic LicenseData, privKey ed25519.PrivateKey) (string, er
 
 	// Chunk into 5 letter segments
 	return "TODO", nil
-
-	// 2. Hash the username and extract the first 4 bytes
-	hasher := sha256.New()
-	hasher.Write([]byte(strings.TrimSpace(strings.ToLower(data.Username))))
-	usernameHash := hasher.Sum(nil)[:4]
 
 	// 3. Pack data tightly into 11 bytes (4 + 2 + 1 + 4)
 	buf := new(bytes.Buffer)
