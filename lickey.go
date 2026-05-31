@@ -68,6 +68,32 @@ func main() {
 
 	fmt.Println(privKey) //REMOVE BEFORE RELEASE
 	fmt.Println(lic)     //REMOVE BEFORE RELEASE
+
+	//Construct the License Key
+	lickey, err := GenerateLicenseKey(lic, privKey)
+	if err != nil {
+		log.Fatal("[-] Error: %v", err)
+	}
+
+	// Print the shiny new key
+	fmt.Printf("\nGenerated Key\n%s\n", lickey)
+}
+
+func GenerateLicenseKey(lic LicenseData, privKey ed25519.PrivateKey) (string, error) {
+	// Parse Expiry
+
+	// Hash the username
+
+	// Pack the data
+
+	// Sign the data
+
+	// Combine the payload and signature
+
+	// Serialise into 120 characters
+
+	// Chunk into 5 letter segments
+	return "TODO", nil
 }
 
 // GenerateAndBase64EncodeKey creates a fresh Ed25519 keypair using a
