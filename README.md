@@ -2,6 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+![image](lickey-logo-small.png)
+
 A simple and secure offline-only license key generator utility
 
 ## Features
