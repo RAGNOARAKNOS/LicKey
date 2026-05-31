@@ -72,9 +72,6 @@ func main() {
 		return
 	}
 
-	fmt.Println(privKey) //REMOVE BEFORE RELEASE
-	fmt.Println(lic)     //REMOVE BEFORE RELEASE
-
 	//Construct the License Key
 	lickey, err := GenerateLicenseKey(lic, privKey)
 	if err != nil {
@@ -82,7 +79,8 @@ func main() {
 	}
 
 	// Print the shiny new key
-	fmt.Printf("\nGenerated Key\n%s\n", lickey)
+	//fmt.Printf("\n%s,%s,%d,%d,%s", lic.Username, lic.ExpiryDate, lic.SkuID, lic.FeatureMask, lickey)
+	fmt.Printf("%s", lickey)
 }
 
 // GenerateLicenseKey builds a signed, human-readable license key from the
@@ -170,7 +168,6 @@ func GenerateAndBase64EncodeKey() (string, string, error) {
 // private key.
 func LoadPrivateKeyFromEnv() (ed25519.PrivateKey, error) {
 	b64Key := os.Getenv(PrivateKeyEnvVarName)
-	println(b64Key) //REMOVE BEFORE RELEASE
 	if b64Key == "" {
 		return nil, fmt.Errorf("environment variable %s is not set", PrivateKeyEnvVarName)
 	}

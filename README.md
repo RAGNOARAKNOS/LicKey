@@ -43,6 +43,8 @@ go build -o LicKey main.go
     ./LicKey -user="DonKey@example.com" -sku 101 -features 3 -expiry "2026-12-25"
 ```
 
+![alt text](example.png)
+
 | Argument | Acceptable Range | Example |
 | - | - | - |
 | `user` | any string, 1 character minimum | `DonKey@example.com` |
