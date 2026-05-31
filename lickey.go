@@ -85,6 +85,19 @@ func main() {
 	fmt.Printf("\nGenerated Key\n%s\n", lickey)
 }
 
+// GenerateLicenseKey builds a signed, human-readable license key from the
+// supplied LicenseData and Ed25519 private key.
+//
+// It constructs an 11-byte payload consisting of a 4-byte SHA-256 hash of the
+// normalised (trimmed, lower-cased) username, followed by the SkuID,
+// FeatureMask, and the expiry date encoded as a little-endian uint32 Unix
+// timestamp. The payload is signed with privKey, and the payload and 64-byte
+// signature are concatenated, Base32-encoded (standard alphabet, no padding),
+// and split into hyphen-separated five-character groups.
+//
+// The ExpiryDate field of lic must be in "2006-01-02" (YYYY-MM-DD) format. It
+// returns the formatted license key, or an error if the expiry date cannot be
+// parsed.
 func GenerateLicenseKey(lic LicenseData, privKey ed25519.PrivateKey) (string, error) {
 	// Parse Expiry
 	time, err := time.Parse("2006-01-02", lic.ExpiryDate)
