@@ -121,7 +121,7 @@ packet
 | 4 - 5 | SKU ID | `uint16` | 2 Bytes | Unique product number |
 | 6 | Feature Mask | `uint8` | 1 Byte | We allocate exactly 1 byte for features to save space. This field acts as a bitmask where each individual bit toggles a feature on (1) or off (0) inside your application engine. <br>E.g 1 = Feature(A), 2 = Feature(B), 3 = Feature(A+B), etc. |
 | 7 - 10 | Expiration Date | `uint32` | 4 Bytes | Stored as UNIX epoch time |
-| 11 - 74 | Ed25519 Signature | `uint8[64] | 64 Bytes | The anti-tamper signature |
+| 11 - 74 | Ed25519 Signature | `uint8[64]` | 64 Bytes | The anti-tamper signature |
 
 #### Text Encoding Structure
 
