@@ -75,7 +75,7 @@ func main() {
 	//Construct the License Key
 	lickey, err := GenerateLicenseKey(lic, privKey)
 	if err != nil {
-		log.Fatal("[-] Error: %v", err)
+		log.Fatalf("[-] Error: %v", err)
 	}
 
 	// Print the shiny new key
