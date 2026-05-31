@@ -56,7 +56,7 @@ This application expects the following environment variables.
 
 | Environment Variable | Description | Default |
 | - | - | - |
-| `lickey-privatekey` | The private key used by the ED25519 algorithm in conjunction with the public key to encode the license. | N/A - If not set, the application will generate a new keypair, present it in the terminal, and exit. |
+| `lickey_privatekey` | The private key used by the ED25519 algorithm in conjunction with the public key to encode the license. | N/A - If not set, the application will generate a new keypair, present it in the terminal, and exit. |
 
 ## Contributing
 
