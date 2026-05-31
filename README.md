@@ -140,11 +140,12 @@ The following are simple examples of how to consume the license keys provided by
 
 ### Go
 
-The Go client was developed in order to test LicKey.
+A command-line client developed in order to test LicKey. See [`examples/go/`](examples/go/README.md).
 
-### Unreal Engine Blueprint
+### Unreal Engine
 
-> TBD
+A drop-in C++ Blueprint Function Library that verifies keys at runtime using the
+OpenSSL module bundled with Unreal Engine. See [`examples/unreal/`](examples/unreal/README.md).
 
 ### C#/Unity
 
