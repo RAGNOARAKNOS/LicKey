@@ -70,6 +70,14 @@ func main() {
 	fmt.Println(lic)     //REMOVE BEFORE RELEASE
 }
 
+// GenerateAndBase64EncodeKey creates a fresh Ed25519 keypair using a
+// cryptographically secure random source and returns both keys as Base64
+// (standard encoding) text strings.
+//
+// It returns the private key and public key (in that order), or an error if
+// key generation fails. The private key string is intended to be stored in the
+// signing environment (e.g. the lickey_privatekey variable), while the public
+// key string is distributed to clients so they can verify license signatures.
 func GenerateAndBase64EncodeKey() (string, string, error) {
 	pubKey, privKey, err := ed25519.GenerateKey(rand.Reader)
 	if err != nil {
@@ -83,6 +91,15 @@ func GenerateAndBase64EncodeKey() (string, string, error) {
 	return privBase64, pubBase64, nil
 }
 
+// LoadPrivateKeyFromEnv reads the Base64-encoded private key from the
+// environment variable named by PrivateKeyEnvVarName and decodes it into an
+// ed25519.PrivateKey.
+//
+// It returns an error if the variable is unset/empty or if the value is not
+// valid Base64 (standard encoding). The decoded bytes are interpreted by
+// length: a 32-byte value is treated as an Ed25519 seed and expanded via
+// ed25519.NewKeyFromSeed, while any other length is used directly as a full
+// private key.
 func LoadPrivateKeyFromEnv() (ed25519.PrivateKey, error) {
 	b64Key := os.Getenv(PrivateKeyEnvVarName)
 	println(b64Key) //REMOVE BEFORE RELEASE
