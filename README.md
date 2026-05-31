@@ -145,7 +145,7 @@ A command-line client developed in order to test LicKey. See [`examples/go/`](ex
 ### Unreal Engine
 
 A drop-in C++ Blueprint Function Library that verifies keys at runtime using the
-OpenSSL module bundled with Unreal Engine. See [`examples/unreal/`](examples/unreal/README.md).
+OpenSSL module bundled with Unreal Engine. See [`examples/unreal/`](examples/Unreal/README.md).
 
 ### C#/Unity
 
