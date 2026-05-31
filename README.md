@@ -23,8 +23,6 @@ A simple and secure offline-only license key generator utility
 
 The fastest way to install the binary directly to your `$GOPATH/bin`
 
-> NOTE: Binary builds are not implemented yet.
-
 ```bash
 go install [github.com/ragnoaraknos/lickey@latest](https://github.com/ragnoaraknos/lickey@latest)
 ```

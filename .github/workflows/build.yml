@@ -1,0 +1,62 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [linux, windows, darwin]
+        include:
+          - os: linux
+            ext: ""
+          - os: windows
+            ext: ".exe"
+          - os: darwin
+            ext: ""
+    runs-on: ubuntu-latest
+    env:
+      GOOS: ${{ matrix.os }}
+      GOARCH: amd64
+      CGO_ENABLED: "0"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Build main application
+        run: go build -v -o "dist/lickey-${{ matrix.os }}${{ matrix.ext }}" .
+
+      - name: Vet main application
+        if: matrix.os == 'linux'
+        run: go vet ./...
+
+      - name: Build Go client example
+        working-directory: examples/go
+        run: go build -v -o "../../dist/lickeyClient-${{ matrix.os }}${{ matrix.ext }}" .
+
+      - name: Vet Go client example
+        if: matrix.os == 'linux'
+        working-directory: examples/go
+        run: go vet ./...
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lickey-${{ matrix.os }}-amd64
+          path: dist/*
+          if-no-files-found: error

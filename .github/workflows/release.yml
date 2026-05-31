@@ -1,0 +1,86 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release (e.g. v1.0.0)"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Release (${{ matrix.os }}/${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: linux
+            arch: amd64
+            ext: ""
+          - os: linux
+            arch: arm64
+            ext: ""
+          - os: windows
+            arch: amd64
+            ext: ".exe"
+          - os: darwin
+            arch: amd64
+            ext: ""
+          - os: darwin
+            arch: arm64
+            ext: ""
+    runs-on: ubuntu-latest
+    env:
+      GOOS: ${{ matrix.os }}
+      GOARCH: ${{ matrix.arch }}
+      CGO_ENABLED: "0"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Resolve version
+        id: version
+        run: echo "tag=${GITHUB_REF_NAME:-${{ github.event.inputs.tag }}}" >> "$GITHUB_OUTPUT"
+
+      - name: Build main application
+        run: |
+          go build -v -trimpath \
+            -ldflags "-s -w" \
+            -o "stage/lickey${{ matrix.ext }}" .
+
+      - name: Build Go client example
+        working-directory: examples/go
+        run: |
+          go build -v -trimpath \
+            -ldflags "-s -w" \
+            -o "../../stage/lickeyClient${{ matrix.ext }}" .
+
+      - name: Package archive
+        run: |
+          cp LICENSE README.md stage/
+          mkdir -p dist
+          archive="lickey-${{ steps.version.outputs.tag }}-${{ matrix.os }}-${{ matrix.arch }}.zip"
+          (cd stage && zip -r -X "../dist/${archive}" .)
+
+      - name: Generate checksums
+        working-directory: dist
+        run: sha256sum *.zip > "checksums-${{ matrix.os }}-${{ matrix.arch }}.txt"
+
+      - name: Upload to release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          files: dist/*
+          generate_release_notes: true
+          fail_on_unmatched_files: true
