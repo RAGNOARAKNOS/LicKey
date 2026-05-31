@@ -87,7 +87,7 @@ func main() {
 
 func GenerateLicenseKey(lic LicenseData, privKey ed25519.PrivateKey) (string, error) {
 	// Parse Expiry
-	time, err := time.Parse("2026-12-25", lic.ExpiryDate)
+	time, err := time.Parse("2006-01-02", lic.ExpiryDate)
 	if err != nil {
 		return "", fmt.Errorf("invalid date format: %v", err)
 	}
@@ -98,40 +98,30 @@ func GenerateLicenseKey(lic LicenseData, privKey ed25519.PrivateKey) (string, er
 	hasher.Write([]byte(strings.TrimSpace(strings.ToLower(lic.Username))))
 	userHash := hasher.Sum(nil)[:4]
 
-	// Pack the data
-
-	// Sign the data
-
-	// Combine the payload and signature
-
-	// Serialise into 120 characters
-
-	// Chunk into 5 letter segments
-	return "TODO", nil
-
-	// 3. Pack data tightly into 11 bytes (4 + 2 + 1 + 4)
+	// Pack the data (11 bytes payload)
 	buf := new(bytes.Buffer)
-	buf.Write(usernameHash)
-	_ = binary.Write(buf, binary.LittleEndian, data.SkuID)
-	_ = binary.Write(buf, binary.LittleEndian, data.FeatureMask)
-	_ = binary.Write(buf, binary.LittleEndian, expiryTimestamp)
+	buf.Write(userHash)
+	_ = binary.Write(buf, binary.LittleEndian, lic.SkuID)
+	_ = binary.Write(buf, binary.LittleEndian, lic.FeatureMask)
+	_ = binary.Write(buf, binary.LittleEndian, expiry)
 	payload := buf.Bytes()
 
-	// 4. Cryptographically Sign the 11-byte payload (Produces 64 bytes)
+	// Sign the data
 	signature := ed25519.Sign(privKey, payload)
 
-	// 5. Combine payload + signature (75 bytes total)
+	// Combine the payload and signature
 	finalBundle := append(payload, signature...)
 
-	// 6. Base32 Serialize (120 characters)
+	// Serialise into 120 characters (Base32)
 	encoder := base32.StdEncoding.WithPadding(base32.NoPadding)
 	b32String := encoder.EncodeToString(finalBundle)
 
-	// Format with chunks of 5 characters
+	// Chunk into 5 letter segments
 	var chunked []string
 	for i := 0; i < len(b32String); i += 5 {
 		chunked = append(chunked, b32String[i:i+5])
 	}
+
 	return strings.Join(chunked, "-"), nil
 }
 
