@@ -16,6 +16,8 @@ go build -o lickeyClient ./...
 lickeyClient -key <LICENSE-KEY> -pubkey <BASE64-PUBLIC-KEY> [-user <username>]
 ```
 
+![alt text](example.png)
+
 | Flag      | Required | Description                                                        |
 | --------- | -------- | ------------------------------------------------------------------ |
 | `-key`    | yes      | The hyphen-chunked license key to inspect.                         |
