@@ -1,0 +1,14 @@
+# Build artifacts
+lickey
+lickey.exe
+*.exe
+
+# Not needed in the build context (only lickey.go + go.mod are copied anyway)
+.git
+.github
+docs
+examples
+*.png
+*.md
+LICENSE
+.vscode

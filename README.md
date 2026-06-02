@@ -35,6 +35,8 @@ cd LicKey
 go build -o LicKey main.go
 ```
 
+Or run it as a container without installing Go — see [`docs/docker.md`](docs/docker.md).
+
 ### Usage
 
 ```bash
